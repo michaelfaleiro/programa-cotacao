@@ -1,0 +1,121 @@
+<div
+  class="modal show fade"
+  style="display: block; background-color: rgba(0, 0, 0, 0.5)"
+  tabindex="-1"
+>
+  <div class="modal-dialog">
+    <div class="modal-content bg-secondary">
+      <header class="modal-header">
+        @if(preco !== null && !isObjectEmpty(preco)) {
+        <h2 class="modal-title">Editar Preço</h2>
+        } @else {
+        <h2 class="modal-title">Novo Preço</h2>
+        }
+        <button (click)="closeModal()" class="btn-close"></button>
+      </header>
+      <div class="modal-body">
+        <form
+          class="text-white"
+          (ngSubmit)="submit(produtoId)"
+          [formGroup]="precoForm"
+          #formDir="ngForm"
+        >
+          <div class="mb-2">
+            <label for="fornecedor">Fornecedor:</label>
+            <input
+              id="fornecedor"
+              type="text"
+              class="form-control"
+              formControlName="fornecedor"
+            />
+            @if(formDir.submitted) {
+            @if(precoForm.get('fornecedor')?.errors?.['required']) {
+            <div class="text-danger fw-semibold">
+              <p>Informe o Produto</p>
+            </div>
+            } }
+          </div>
+
+          <div class="mb-3">
+            <label for="sku">Sku</label>
+            <input
+              id="sku"
+              type="text"
+              class="form-control"
+              id="sku"
+              formControlName="sku"
+            />
+          </div>
+
+          <div class="row mb-3">
+            <div class="col">
+              <label for="quantidadeAtendida">Quantidade:</label>
+              <input
+                id="quantidadeAtendida"
+                type="number"
+                class="form-control"
+                id="quantidadeAtendida"
+                formControlName="quantidadeAtendida"
+              />
+            </div>
+
+            <div class="col">
+              <label for="marca">Marca:</label>
+              <input
+                id="marca"
+                type="text"
+                class="form-control"
+                id="marca"
+                formControlName="marca"
+              />
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col">
+              <label for="precoCusto">Preço de Compra:</label>
+              <input
+                id="precoCusto"
+                type="number"
+                class="form-control"
+                id="precoCusto"
+                formControlName="precoCusto"
+              />
+            </div>
+
+            <div class="col">
+              <label for="precoVenda">Preço de Venda:</label>
+              <input
+                id="precoVenda"
+                type="number"
+                class="form-control"
+                id="precoVenda"
+                formControlName="precoVenda"
+              />
+            </div>
+          </div>
+
+          @if(isBusy) {
+          <button class="col-12 btn btn-secondary" disabled>Salvando...</button>
+          } @else {
+          <div class="d-flex flex-nowrap align-items-center gap-2 w-100">
+            @if(preco !== null && !isObjectEmpty(preco)) {
+            <button type="submit" class="btn btn-primary w-100">Alterar</button>
+            } @else {
+            <button type="submit" class="btn btn-success w-100">Salvar</button>
+
+            }
+            <button
+              type="button"
+              (click)="closeModal()"
+              class="btn btn-danger w-100"
+            >
+              Cancelar
+            </button>
+          </div>
+          }
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

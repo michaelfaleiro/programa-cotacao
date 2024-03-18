@@ -1,0 +1,129 @@
+<div class="row" *ngIf="cotacao$ | async as cotacao">
+  <div class="col-2">
+    <h5>Detalhes</h5>
+    <div>
+      <p>
+        Status: <span>{{ cotacao.status }}</span>
+      </p>
+      <p>
+        Carro: <span>{{ cotacao.carro }}</span>
+      </p>
+      <p>
+        Placa: <span>{{ cotacao.placa }}</span>
+      </p>
+      <p>
+        Chassi: <span>{{ cotacao.chassi }}</span>
+      </p>
+      <p>
+        Observação: <span>{{ cotacao.observacao }}</span>
+      </p>
+    </div>
+  </div>
+  <div class="col-4">
+    <h3 class="text-center">Produtos</h3>
+    <button (click)="showModalProduto()" class="btn btn-sm btn-danger mb-1">
+      Adicionar Produto
+    </button>
+    @if(isModalProduto) {
+    <app-modal-produto
+      (isModalProduto)="showModalProduto()"
+      (updateProduto)="getCotacao()"
+      [produto]="produto"
+    />
+    }
+    <table class="table table-sm table-striped">
+      <thead>
+        <tr>
+          <th class="text-start">Quant</th>
+          <th>Sku</th>
+          <th>Nome</th>
+          <th class="text-center">Açoes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let produto of cotacao.Produtos">
+          <td class="text-center">{{ produto.quantidade }}</td>
+          <td>{{ produto.sku }}</td>
+          <td>{{ produto.nome | titlecase }}</td>
+          <td class="d-flex gap-1 justify-content-end">
+            <button
+              (click)="listarPreco(produto.id)"
+              class="btn btn-sm btn-success"
+              title="Detalhes"
+            >
+              <i class="fa-solid fa-money-check-dollar"></i>
+            </button>
+            <button
+              (click)="editProduto(produto.id)"
+              class="btn btn-sm btn-primary"
+              title="Editar"
+            >
+              <i class="fa-solid fa-file-pen"></i>
+            </button>
+            <button
+              (click)="deleteProduto(produto.id)"
+              class="btn btn-sm btn-danger"
+              title="Remover"
+            >
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-6">
+    <h3 class="text-center">Preços</h3>
+    <button (click)="showModalPreco()" class="btn btn-sm btn-danger mb-1">
+      Adicionar Preço
+    </button>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Fornecedor</th>
+          <th>Sku</th>
+          <th>Marca</th>
+          <th>Custo</th>
+          <th>Venda</th>
+          <th>Quantidade</th>
+          <th class="text-center">Açoes</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="precoProduto$ | async as precoProduto">
+        <tr *ngFor="let preco of precoProduto.precos">
+          <td>{{ preco.fornecedor | titlecase }}</td>
+          <td>{{ preco.sku | uppercase }}</td>
+          <td>{{ preco.marca | uppercase }}</td>
+          <td>{{ preco.precoCusto | currency }}</td>
+          <td>{{ preco.precoVenda | currency }}</td>
+          <td>{{ preco.quantidadeAtendida }}</td>
+          <td class="d-flex gap-1 justify-content-end">
+            <button
+              (click)="editProduto(preco.id)"
+              class="btn btn-sm btn-primary"
+              title="Editar"
+            >
+              <i class="fa-solid fa-file-pen"></i>
+            </button>
+            <button
+              (click)="deleteProduto(preco.id)"
+              class="btn btn-sm btn-danger"
+              title="Remover"
+            >
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+        @if(isModalPreco) {
+        <app-modal-preco
+          (isModalPreco)="showModalPreco()"
+          (updatePreco)="getCotacao()"
+          [preco]="preco"
+          [produtoId]="precoProduto.id"
+        />
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

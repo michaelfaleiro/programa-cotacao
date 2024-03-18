@@ -1,0 +1,122 @@
+<div
+  class="modal show fade"
+  style="display: block; background-color: rgba(0, 0, 0, 0.5)"
+  tabindex="-1"
+>
+  <div class="modal-dialog">
+    <div class="modal-content bg-secondary">
+      <header class="modal-header">
+        @if(cotacao !== null && !isObjectEmpty(cotacao)) {
+        <h2 class="modal-title">Editar Cotação</h2>
+        } @else {
+        <h2 class="modal-title">Nova Cotação</h2>
+        }
+
+        <button (click)="closeModal()" class="btn-close"></button>
+      </header>
+      <div class="modal-body">
+        <form
+          class="text-white"
+          (ngSubmit)="submit()"
+          [formGroup]="cotacaoForm"
+          #formDir="ngForm"
+        >
+          <div class="mb-2">
+            <label for="carro">Carro:</label>
+            <input
+              id="carro"
+              type="text"
+              class="form-control"
+              formControlName="carro"
+            />
+            @if(formDir.submitted) {
+            @if(cotacaoForm.get('carro')?.errors?.['required']) {
+            <div class="text-danger fw-semibold">
+              <p>Informe o Carro</p>
+            </div>
+            } }
+          </div>
+
+          <div class="mb-3">
+            <label for="placa">Placa</label>
+            <input
+              id="placa"
+              type="text"
+              class="form-control"
+              id="placa"
+              formControlName="placa"
+            />
+            @if(formDir.submitted) {
+            @if(cotacaoForm.get('placa')?.errors?.['maxlength']) {
+            <div class="text-danger fw-semibold">
+              <p>Máximo 7 digítos/p></p>
+            </div>
+
+            } }
+          </div>
+
+          <div class="row mb-3">
+            <div class="col">
+              <label for="chassi">Chassi:</label>
+              <input
+                id="chassi"
+                type="text"
+                class="form-control"
+                id="chassi"
+                formControlName="chassi"
+              />
+              @if(formDir.submitted) {
+              @if(cotacaoForm.get('chassi')?.errors?.['maxlength']) {
+              <div class="text-danger fw-semibold">
+                <p>Máximo 17 digítos</p>
+              </div>
+              } }
+            </div>
+
+            <div class="col">
+              <label for="observacao">Observação:</label>
+              <input
+                id="observacao"
+                type="text"
+                class="form-control"
+                id="observacao"
+                formControlName="observacao"
+              />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="status">Status:</label>
+            <input
+              id="status"
+              type="text"
+              class="form-control"
+              id="status"
+              formControlName="status"
+            />
+          </div>
+
+          @if(isBusy) {
+          <button class="col-12 btn btn-secondary" disabled>Salvando...</button>
+          } @else {
+          <div class="d-flex flex-nowrap align-items-center gap-2 w-100">
+            @if(cotacao !== null && !isObjectEmpty(cotacao)) {
+            <button type="submit" class="btn btn-primary w-100">Alterar</button>
+            } @else {
+            <button type="submit" class="btn btn-success w-100">Salvar</button>
+
+            }
+            <button
+              type="button"
+              (click)="closeModal()"
+              class="btn btn-danger w-100"
+            >
+              Cancelar
+            </button>
+          </div>
+          }
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

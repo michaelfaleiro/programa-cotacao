@@ -1,0 +1,9 @@
+.fixed-alert {
+  position: fixed;
+  top: 10px;
+  /* Ajuste conforme necessário para a posição vertical */
+  right: 10px;
+  /* Ajuste conforme necessário para a posição horizontal */
+  z-index: 9999;
+  /* Certifique-se de que o z-index seja maior que outros elementos na página */
+}

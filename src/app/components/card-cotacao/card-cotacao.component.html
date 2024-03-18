@@ -1,11 +1,25 @@
-<div class="card" style="width: 13rem;">
+<div class="card mb-1" style="width: 14rem; min-height: 10rem">
   <div class="card-body">
     <div class="d-flex justify-content-between">
-    <h5 class="card-title">Golf</h5>
-      <p>Status</p>
+      <h5 class="card-title">{{ cotacao.carro }}</h5>
+      <p>{{ cotacao.status }}</p>
     </div>
-    <h6 class="card-subtitle mb-2 text-body-secondary">KNH45678901234567</h6>
-    <p class="card-text">Peças de Suspensão</p>
-    <a href="#" class="card-link">Abrir</a>
+    <h6 class="card-subtitle mb-2 text-body-secondary">{{ cotacao.chassi }}</h6>
+    <p class="card-text">
+      @if(cotacao.observacao){
+      {{ cotacao.observacao }}
+      } @else { Sem observação }
+    </p>
+    <div class="d-flex gap-1 justify-content-end">
+      <a href="cotacao/{{ cotacao.id }}" class="btn btn-sm btn-success" title="Ver detalhes"
+        ><i class="fa-solid fa-cart-plus"></i></a
+      >
+      <button class="btn btn-sm btn-primary" (click)="edit(cotacao.id)" title="Editar">
+        <i class="fa-solid fa-file-pen"></i>
+      </button>
+      <button class="btn btn-sm btn-danger" (click)="delete(cotacao.id)" title="Remover">
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </div>
   </div>
 </div>
