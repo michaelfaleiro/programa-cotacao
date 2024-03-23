@@ -9,6 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MessageService } from '../../services/message.service';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-modal-cotacao',
@@ -58,8 +59,16 @@ export class ModalCotacaoComponent {
       this.isBusy = true;
 
       if (this.cotacao.id) {
-        this.cotacaoService.putCotacao(this.cotacaoForm.value).subscribe(
-          () => {
+        this.cotacaoService
+          .putCotacao(this.cotacaoForm.value)
+          .pipe(
+            catchError((error) => {
+              this.messageService.add(`Falha ao atualizar cotação`, 'danger');
+              this.isBusy = false;
+              throw error;
+            })
+          )
+          .subscribe(() => {
             this.isBusy = false;
             this.updateCotacao.emit();
             this.closeModal();
@@ -67,25 +76,23 @@ export class ModalCotacaoComponent {
               'Cotação atualizada com sucesso',
               'success'
             );
-          },
-          (error) => {
-            this.messageService.add(`Falha ao atualizar cotação`, 'danger');
-            this.isBusy = false;
-          }
-        );
+          });
       } else {
-        this.cotacaoService.postCotacao(this.cotacaoForm.value).subscribe(
-          () => {
+        this.cotacaoService
+          .postCotacao(this.cotacaoForm.value)
+          .pipe(
+            catchError((error) => {
+              this.messageService.add(`Falha ao salvar cotação`, 'danger');
+              this.isBusy = false;
+              throw error;
+            })
+          )
+          .subscribe(() => {
             this.isBusy = false;
             this.updateCotacao.emit();
             this.closeModal();
             this.messageService.add('Cotação salva com sucesso', 'success');
-          },
-          (error) => {
-            this.messageService.add(`Falha ao salvar cotação`, 'danger');
-            this.isBusy = false;
-          }
-        );
+          });
       }
     }
   }

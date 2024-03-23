@@ -7,6 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { IPreco } from '../../interface/IPreco';
+import { MessageService } from '../../services/message.service';
+import { catchError, tap } from 'rxjs';
 
 @Component({
   selector: 'app-modal-preco',
@@ -27,7 +29,8 @@ export class ModalPrecoComponent {
 
   constructor(
     private produtoService: ProdutoService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
@@ -62,13 +65,47 @@ export class ModalPrecoComponent {
     if (this.precoForm.valid) {
       this.isBusy = true;
 
-      this.produtoService
-        .addPrecoProduto(produtoId!, this.precoForm.value)
-        .subscribe((response) => {
-          this.isBusy = false;
-          this.updatePreco.emit();
-          this.closeModal();
-        });
+      if (this.preco.id) {
+        this.produtoService
+          .putPrecoProduto(produtoId!, this.precoForm.value)
+          .pipe(
+            tap(() => {
+              this.isBusy = false;
+              this.updatePreco.emit();
+              this.closeModal();
+              this.messageService.add(
+                'Preço atualizado com sucesso!',
+                'success'
+              );
+            }),
+            catchError((error) => {
+              this.messageService.add('Falha ao atualizar preço', 'danger');
+              this.isBusy = false;
+              throw error;
+            })
+          )
+          .subscribe();
+      } else {
+        this.produtoService
+          .addPrecoProduto(produtoId!, this.precoForm.value)
+          .pipe(
+            tap(() => {
+              this.isBusy = false;
+              this.updatePreco.emit();
+              this.closeModal();
+              this.messageService.add(
+                'Preço cadastrado com sucesso!',
+                'success'
+              );
+            }),
+            catchError((error) => {
+              this.messageService.add('Falha ao cadastrar preço', 'danger');
+              this.isBusy = false;
+              throw error;
+            })
+          )
+          .subscribe();
+      }
     }
   }
 

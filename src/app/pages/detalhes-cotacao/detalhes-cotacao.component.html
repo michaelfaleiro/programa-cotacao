@@ -100,14 +100,14 @@
           <td>{{ preco.quantidadeAtendida }}</td>
           <td class="d-flex gap-1 justify-content-end">
             <button
-              (click)="editProduto(preco.id)"
+              (click)="editPreco(precoProduto.id, preco.id)"
               class="btn btn-sm btn-primary"
               title="Editar"
             >
               <i class="fa-solid fa-file-pen"></i>
             </button>
             <button
-              (click)="deleteProduto(preco.id)"
+              (click)="removePreco(precoProduto.id, preco.id)"
               class="btn btn-sm btn-danger"
               title="Remover"
             >

@@ -87,6 +87,24 @@ export class DetalhesCotacaoComponent {
     );
   }
 
+  editPreco(produtoId: string, precoId: string) {
+    this.produtoService
+      .getOneProduto(produtoId)
+      .subscribe((produto: IProduto) => {
+        this.produto = produto;
+        this.produtoId = produtoId;
+        this.produtoService.getOneProduto(produtoId).subscribe(
+          (produto: IProduto) => {
+            this.preco = produto.precos.find((preco) => preco.id === precoId)!;
+            this.isModalPreco = true;
+          },
+          (error) => {
+            this.messageService.add('Falha ao abrir preço', 'danger');
+          }
+        );
+      });
+  }
+
   deleteProduto(id: string) {
     this.produtoService.deleteProduto(id).subscribe(
       () => {
@@ -95,6 +113,18 @@ export class DetalhesCotacaoComponent {
       },
       (error) => {
         this.messageService.add('Falha ao deletar produto', 'danger');
+      }
+    );
+  }
+
+  removePreco(produtoId: string, precoId: string) {
+    this.produtoService.removePrecoProduto(produtoId, precoId).subscribe(
+      () => {
+        this.getCotacao();
+        this.messageService.add('Preço removido com sucesso', 'success');
+      },
+      (error) => {
+        this.messageService.add('Falha ao remover preço', 'danger');
       }
     );
   }

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { IProduto } from '../../interface/IProduto';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
-import {IPreco} from "../../interface/IPreco";
+import { IPreco } from '../../interface/IPreco';
 
 @Injectable({
   providedIn: 'root',
@@ -32,8 +32,17 @@ export class ProdutoService {
     return this.http.delete<IProduto>(`${this.apiUrl}/${id}`);
   }
 
-  addPrecoProduto(produtoId: string, preco: IPreco)
-  {
+  addPrecoProduto(produtoId: string, preco: IPreco) {
     return this.http.post(`${this.apiUrl}/${produtoId}/addpreco`, preco);
+  }
+
+  removePrecoProduto(produtoId: string, precoId: string) {
+    return this.http.delete(
+      `${this.apiUrl}/${produtoId}/removepreco/${precoId}`
+    );
+  }
+
+  putPrecoProduto(produtoId: string, preco: IPreco) {
+    return this.http.put(`${this.apiUrl}/${produtoId}/updatepreco`, preco);
   }
 }
